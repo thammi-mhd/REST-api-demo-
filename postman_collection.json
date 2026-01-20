@@ -1,7 +1,8 @@
 {
   "info": {
     "name": "Task Management API",
-    "description": "REST API for task management with JWT authentication and role-based access",
+    "description": ""Simple task management REST API built to practice JWT authentication and role-based access control"
+",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
