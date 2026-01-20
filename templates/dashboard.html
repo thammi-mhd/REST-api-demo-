@@ -14,8 +14,8 @@
     <p id="userRole" class="role"></p>
 
     <nav>
-      <button class="nav-btn active">📊 Dashboard</button>
-      <button class="nav-btn" onclick="logout()">🚪 Logout</button>
+      <button class="nav-btn active">Dashboard</button>
+      <button class="nav-btn" onclick="logout()">Logout</button>
     </nav>
   </aside>
 
@@ -27,7 +27,7 @@
 
     <!-- CREATE TASK -->
     <section class="card">
-      <h3>➕ Create New Task</h3>
+      <h3>Create New Task</h3>
       <input id="taskTitle" placeholder="Task title" />
       <input id="taskDesc" placeholder="Task description (optional)" />
       <button onclick="createTask()">Add Task</button>
@@ -36,22 +36,22 @@
 
     <!-- TASK LIST -->
     <section class="card">
-      <h3>📋 Your Tasks</h3>
+      <h3>Your Tasks</h3>
       <ul id="taskList"></ul>
     </section>
 
     <!-- ADMIN PANEL -->
     <section class="card admin-only" id="adminPanel" style="display: none">
-      <h3>⚙️ Admin Panel</h3>
+      <h3>Admin Panel</h3>
 
       <!-- Users Management -->
       <div class="admin-section">
-        <h4>👥 Users Management</h4>
+        <h4>Users Management</h4>
         <button onclick="loadUsers()" class="btn-primary">
           View All Users
         </button>
         <button onclick="deleteAllUsers()" class="btn-danger">
-          🗑️ Delete All Users
+          Delete All Users
         </button>
         <p id="adminMessage"></p>
         <div class="user-list-container">
@@ -73,12 +73,25 @@
       <!-- Statistics -->
       <div
         class="admin-section"
-        style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb"
+        style="
+          margin-top: 20px;
+          padding-top: 20px;
+          border-top: 1px solid #e5e7eb;
+        "
       >
-        <h4>📊 Statistics</h4>
+        <h4>Statistics</h4>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
-          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 8px; color: white">
-            <p style="margin: 0; opacity: 0.9; font-size: 0.9rem">Total Users</p>
+          <div
+            style="
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              padding: 20px;
+              border-radius: 8px;
+              color: white;
+            "
+          >
+            <p style="margin: 0; opacity: 0.9; font-size: 0.9rem">
+              Total Users
+            </p>
             <p
               style="margin: 10px 0 0 0; font-size: 2rem; font-weight: bold"
               id="totalUsers"
@@ -86,8 +99,17 @@
               0
             </p>
           </div>
-          <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; border-radius: 8px; color: white">
-            <p style="margin: 0; opacity: 0.9; font-size: 0.9rem">Total Tasks</p>
+          <div
+            style="
+              background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+              padding: 20px;
+              border-radius: 8px;
+              color: white;
+            "
+          >
+            <p style="margin: 0; opacity: 0.9; font-size: 0.9rem">
+              Total Tasks
+            </p>
             <p
               style="margin: 10px 0 0 0; font-size: 2rem; font-weight: bold"
               id="totalTasks"

@@ -10,13 +10,19 @@
   <form class="form" id="loginForm">
     <div class="input-field">
       <input type="email" id="email" name="email" required autofocus />
-      <label for="email">📧 Email</label>
+      <label for="email">Email</label>
     </div>
 
     <div class="input-field password-field">
       <input type="password" id="password" name="password" required />
-      <label for="password">🔐 Password</label>
-      <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password')">👁️</button>
+      <label for="password">Password</label>
+      <button
+        type="button"
+        class="toggle-password"
+        onclick="togglePasswordVisibility('password')"
+      >
+        view
+      </button>
       <small class="helper-text">Your credentials are securely encrypted</small>
     </div>
 
@@ -31,16 +37,16 @@
 </div>
 
 <script>
-function togglePasswordVisibility(fieldId) {
-  const field = document.getElementById(fieldId);
-  const btn = event.target;
-  if (field.type === 'password') {
-    field.type = 'text';
-    btn.textContent = '🙈';
-  } else {
-    field.type = 'password';
-    btn.textContent = '👁️';
+  function togglePasswordVisibility(fieldId) {
+    const field = document.getElementById(fieldId);
+    const btn = event.target;
+    if (field.type === "password") {
+      field.type = "text";
+      btn.textContent = "hide";
+    } else {
+      field.type = "password";
+      btn.textContent = "view";
+    }
   }
-}
 </script>
 {% endblock %}

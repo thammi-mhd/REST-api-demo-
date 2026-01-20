@@ -16,13 +16,19 @@
 
     <div class="input-field">
       <input type="email" id="email" name="email" required />
-      <label for="email">📧 Email</label>
+      <label for="email">Email</label>
     </div>
 
     <div class="input-field password-field">
       <input type="password" id="password" name="password" required />
-      <label for="password">🔐 Password</label>
-      <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password')">👁️</button>
+      <label for="password">Password</label>
+      <button
+        type="button"
+        class="toggle-password"
+        onclick="togglePasswordVisibility('password')"
+      >
+        view
+      </button>
       <small class="helper-text">Minimum 6 characters recommended</small>
     </div>
 
@@ -33,8 +39,14 @@
         name="confirm_password"
         required
       />
-      <label for="confirm_password">✔️ Confirm Password</label>
-      <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirm_password')">👁️</button>
+      <label for="confirm_password">Confirm Password</label>
+      <button
+        type="button"
+        class="toggle-password"
+        onclick="togglePasswordVisibility('confirm_password')"
+      >
+        view
+      </button>
       <small class="helper-text" id="passwordMatch"></small>
     </div>
 
@@ -49,49 +61,51 @@
 </div>
 
 <script>
-function togglePasswordVisibility(fieldId) {
-  const field = document.getElementById(fieldId);
-  const btn = event.target;
-  if (field.type === 'password') {
-    field.type = 'text';
-    btn.textContent = '🙈';
-  } else {
-    field.type = 'password';
-    btn.textContent = '👁️';
+  function togglePasswordVisibility(fieldId) {
+    const field = document.getElementById(fieldId);
+    const btn = event.target;
+    if (field.type === "password") {
+      field.type = "text";
+      btn.textContent = "hide";
+    } else {
+      field.type = "password";
+      btn.textContent = "view";
+    }
   }
-}
 
-// Real-time password match feedback
-document.getElementById('confirm_password')?.addEventListener('input', function() {
-  const password = document.getElementById('password').value;
-  const confirm = this.value;
-  const feedback = document.getElementById('passwordMatch');
-  
-  if (confirm && password !== confirm) {
-    feedback.textContent = '❌ Passwords do not match';
-    feedback.style.color = '#ef4444';
-  } else if (confirm && password === confirm) {
-    feedback.textContent = '✅ Passwords match';
-    feedback.style.color = '#22c55e';
-  } else {
-    feedback.textContent = '';
-  }
-});
+  // Real-time password match feedback
+  document
+    .getElementById("confirm_password")
+    ?.addEventListener("input", function () {
+      const password = document.getElementById("password").value;
+      const confirm = this.value;
+      const feedback = document.getElementById("passwordMatch");
 
-// Also check when main password changes
-document.getElementById('password')?.addEventListener('input', function() {
-  const confirm = document.getElementById('confirm_password').value;
-  const feedback = document.getElementById('passwordMatch');
-  
-  if (confirm && this.value !== confirm) {
-    feedback.textContent = '❌ Passwords do not match';
-    feedback.style.color = '#ef4444';
-  } else if (confirm && this.value === confirm) {
-    feedback.textContent = '✅ Passwords match';
-    feedback.style.color = '#22c55e';
-  } else {
-    feedback.textContent = '';
-  }
-});
+      if (confirm && password !== confirm) {
+        feedback.textContent = "Passwords do not match";
+        feedback.style.color = "#ef4444";
+      } else if (confirm && password === confirm) {
+        feedback.textContent = "Passwords match";
+        feedback.style.color = "#22c55e";
+      } else {
+        feedback.textContent = "";
+      }
+    });
+
+  // Also check when main password changes
+  document.getElementById("password")?.addEventListener("input", function () {
+    const confirm = document.getElementById("confirm_password").value;
+    const feedback = document.getElementById("passwordMatch");
+
+    if (confirm && this.value !== confirm) {
+      feedback.textContent = "Passwords do not match";
+      feedback.style.color = "#ef4444";
+    } else if (confirm && this.value === confirm) {
+      feedback.textContent = "Passwords match";
+      feedback.style.color = "#22c55e";
+    } else {
+      feedback.textContent = "";
+    }
+  });
 </script>
 {% endblock %}

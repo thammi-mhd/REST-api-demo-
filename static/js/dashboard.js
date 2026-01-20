@@ -73,7 +73,7 @@ async function createTask() {
     msg.textContent = "⚠️ Task title is required";
     msg.style.color = "#dc2626";
     msg.style.fontWeight = "600";
-    setTimeout(() => msg.textContent = "", 4000);
+    setTimeout(() => (msg.textContent = ""), 4000);
     return;
   }
 
@@ -98,7 +98,7 @@ async function createTask() {
       msg.textContent = "❌ " + errorMsg;
       msg.style.color = "#dc2626";
       msg.style.fontWeight = "600";
-      setTimeout(() => msg.textContent = "", 4000);
+      setTimeout(() => (msg.textContent = ""), 4000);
       return;
     }
 
@@ -107,7 +107,7 @@ async function createTask() {
     msg.style.fontWeight = "600";
     document.getElementById("taskTitle").value = "";
     document.getElementById("taskDesc").value = "";
-    setTimeout(() => msg.textContent = "", 3000);
+    setTimeout(() => (msg.textContent = ""), 3000);
 
     loadTasks();
   } catch (error) {
@@ -115,7 +115,7 @@ async function createTask() {
     msg.textContent = "❌ Network error. Please try again.";
     msg.style.color = "#dc2626";
     msg.style.fontWeight = "600";
-    setTimeout(() => msg.textContent = "", 4000);
+    setTimeout(() => (msg.textContent = ""), 4000);
   }
 }
 
@@ -136,7 +136,8 @@ async function loadTasks() {
     list.innerHTML = "";
 
     if (!tasks.length) {
-      list.innerHTML = "<li style='text-align: center; color: #9ca3af; padding: 20px;'>✨ No tasks yet. Create one to get started!</li>";
+      list.innerHTML =
+        "<li style='text-align: center; color: #9ca3af; padding: 20px;'>✨ No tasks yet. Create one to get started!</li>";
       return;
     }
 
@@ -148,7 +149,7 @@ async function loadTasks() {
       const content = document.createElement("div");
       content.innerHTML = `<strong>${t.title}</strong>${t.description ? `<br><small style="color: #6b7280;">${t.description}</small>` : ""}`;
       li.appendChild(content);
-      
+
       const deleteBtn = document.createElement("button");
       deleteBtn.innerHTML = "🗑️";
       deleteBtn.style.background = "none";
@@ -157,7 +158,7 @@ async function loadTasks() {
       deleteBtn.style.fontSize = "1.2rem";
       deleteBtn.onclick = () => deleteTask(t.id);
       li.appendChild(deleteBtn);
-      
+
       list.appendChild(li);
     });
   } catch (error) {

@@ -54,7 +54,7 @@ if (registerForm) {
     }
 
     // Validate email format
-    if (!email.includes('@') || !email.includes('.')) {
+    if (!email.includes("@") || !email.includes(".")) {
       messageBox.innerText = "⚠️ Please enter a valid email";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
@@ -86,7 +86,8 @@ if (registerForm) {
         messageBox.innerText = "✅ " + result.message;
         messageBox.className = "message-box success";
       } else {
-        messageBox.innerText = "❌ " + (result.message || "Registration failed");
+        messageBox.innerText =
+          "❌ " + (result.message || "Registration failed");
         messageBox.className = "message-box error";
       }
       messageBox.style.display = "block";
@@ -104,7 +105,8 @@ if (registerForm) {
       }
     } catch (error) {
       console.error("Fetch error:", error);
-      messageBox.innerText = "❌ Network error. Please check your connection and try again.";
+      messageBox.innerText =
+        "❌ Network error. Please check your connection and try again.";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
 
@@ -149,7 +151,7 @@ if (loginForm) {
     }
 
     // Validate email format
-    if (!email.includes('@') || !email.includes('.')) {
+    if (!email.includes("@") || !email.includes(".")) {
       messageBox.innerText = "⚠️ Please enter a valid email";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
@@ -207,7 +209,8 @@ if (loginForm) {
       }
     } catch (error) {
       console.error("Fetch error:", error);
-      messageBox.innerText = "❌ Network error. Please check your connection and try again.";
+      messageBox.innerText =
+        "❌ Network error. Please check your connection and try again.";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
 
