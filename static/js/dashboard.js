@@ -1,12 +1,12 @@
 const token = localStorage.getItem("token");
 const role = localStorage.getItem("role");
 
-// Verify token exists
+// Redirect to login if auth data is missing
 if (!token || !role) {
   window.location.href = "/login";
 }
 
-// Decode JWT safely
+// Decode JWT payload (used only for UI info)
 function decodeToken(token) {
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
@@ -23,32 +23,31 @@ if (!payload) {
   logout();
 }
 
-// Display welcome message
-// JWT payload structure: { "sub": user_id (string), "email": "...", "name": "...", "role": "...", "id": ... }
+// Extract user info from token
 const userId = parseInt(payload.sub) || null;
 const userName = payload.name || payload.email || "User";
 const userEmail = payload.email || "User";
 const userRole = payload.role || "user";
 
+// Debug logs during development
 console.log("Decoded token payload:", payload);
 console.log("User ID:", userId);
 console.log("User Name:", userName);
 console.log("User email:", userEmail);
 console.log("User role:", userRole);
 
+// Update UI with user info
 document.getElementById("welcome").innerText = `Welcome, ${userName}`;
 document.getElementById("userRole").innerText = `Role: ${userRole}`;
 
-// Show admin panel ONLY if user role is "admin" (case-sensitive)
+// Show admin panel only for admin users
 if (userRole && userRole.toLowerCase() === "admin") {
-  console.log("User is admin - showing admin panel");
   document.getElementById("adminPanel").style.display = "block";
 } else {
-  console.log("User is not admin - hiding admin panel");
   document.getElementById("adminPanel").style.display = "none";
 }
 
-// AUTH HEADERS WITH SECURE TOKEN
+// Helper for authenticated API requests
 function authHeaders() {
   return {
     "Content-Type": "application/json",
@@ -56,14 +55,14 @@ function authHeaders() {
   };
 }
 
-// SECURE LOGOUT
+// Clear auth data and redirect
 function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("role");
   window.location.href = "/login";
 }
 
-// CREATE TASK WITH VALIDATION
+// Create a new task
 async function createTask() {
   const title = document.getElementById("taskTitle").value.trim();
   const description = document.getElementById("taskDesc").value.trim();
@@ -77,9 +76,6 @@ async function createTask() {
     return;
   }
 
-  console.log("Creating task:", { title, description });
-  console.log("Auth headers:", authHeaders());
-
   try {
     const res = await fetch("/api/v1/tasks", {
       method: "POST",
@@ -87,15 +83,10 @@ async function createTask() {
       body: JSON.stringify({ title, description }),
     });
 
-    console.log("Task creation response status:", res.status);
-
     const data = await res.json();
-    console.log("Task creation response data:", data);
 
     if (!res.ok) {
-      const errorMsg = data.message || data.msg || "Error creating task";
-      console.error("Task creation error:", errorMsg);
-      msg.textContent = "❌ " + errorMsg;
+      msg.textContent = "❌ " + (data.message || "Error creating task");
       msg.style.color = "#dc2626";
       msg.style.fontWeight = "600";
       setTimeout(() => (msg.textContent = ""), 4000);
@@ -105,13 +96,13 @@ async function createTask() {
     msg.textContent = "✅ Task added successfully!";
     msg.style.color = "#22c55e";
     msg.style.fontWeight = "600";
+
     document.getElementById("taskTitle").value = "";
     document.getElementById("taskDesc").value = "";
-    setTimeout(() => (msg.textContent = ""), 3000);
 
+    setTimeout(() => (msg.textContent = ""), 3000);
     loadTasks();
   } catch (error) {
-    console.error("Network error creating task:", error);
     msg.textContent = "❌ Network error. Please try again.";
     msg.style.color = "#dc2626";
     msg.style.fontWeight = "600";
@@ -119,7 +110,7 @@ async function createTask() {
   }
 }
 
-// LOAD TASKS WITH ERROR HANDLING
+// Fetch tasks for current user
 async function loadTasks() {
   try {
     const res = await fetch("/api/v1/tasks", {
@@ -146,8 +137,14 @@ async function loadTasks() {
       li.style.display = "flex";
       li.style.justifyContent = "space-between";
       li.style.alignItems = "center";
+
       const content = document.createElement("div");
-      content.innerHTML = `<strong>${t.title}</strong>${t.description ? `<br><small style="color: #6b7280;">${t.description}</small>` : ""}`;
+      content.innerHTML = `<strong>${t.title}</strong>${
+        t.description
+          ? `<br><small style="color: #6b7280;">${t.description}</small>`
+          : ""
+      }`;
+
       li.appendChild(content);
 
       const deleteBtn = document.createElement("button");
@@ -157,8 +154,8 @@ async function loadTasks() {
       deleteBtn.style.cursor = "pointer";
       deleteBtn.style.fontSize = "1.2rem";
       deleteBtn.onclick = () => deleteTask(t.id);
-      li.appendChild(deleteBtn);
 
+      li.appendChild(deleteBtn);
       list.appendChild(li);
     });
   } catch (error) {
@@ -166,7 +163,7 @@ async function loadTasks() {
   }
 }
 
-// DELETE TASK
+// Delete a task
 async function deleteTask(taskId) {
   if (!confirm("Delete this task?")) {
     return;
@@ -189,7 +186,7 @@ async function deleteTask(taskId) {
   }
 }
 
-// LOAD ADMIN USERS WITH ERROR HANDLING
+// Load all users (admin only)
 async function loadUsers() {
   try {
     const res = await fetch("/api/v1/admin/users", {
@@ -214,13 +211,13 @@ async function loadUsers() {
       return;
     }
 
-    // Update statistics
     document.getElementById("totalUsers").innerText = users.length;
 
     users.forEach((u) => {
       const tr = document.createElement("tr");
       const roleColor = u.role === "admin" ? "#ef4444" : "#22c55e";
       const roleLabel = u.role === "admin" ? "👑 Admin" : "👤 User";
+
       tr.innerHTML = `
         <td style="padding: 12px;">${u.id}</td>
         <td style="padding: 12px; font-weight: 600;">${u.name || "N/A"}</td>
@@ -234,17 +231,17 @@ async function loadUsers() {
           <button onclick="deleteUser(${u.id})" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">🗑️ Delete</button>
         </td>
       `;
+
       tbody.appendChild(tr);
     });
   } catch (error) {
-    console.error("Error loading users:", error);
     document.getElementById("adminMessage").textContent =
       "❌ Error loading users: " + error.message;
     document.getElementById("adminMessage").style.color = "#dc2626";
   }
 }
 
-// DELETE USER
+// Delete a user (admin)
 async function deleteUser(userId) {
   if (!confirm("Are you sure you want to delete this user?")) {
     return;
@@ -268,15 +265,13 @@ async function deleteUser(userId) {
     document.getElementById("adminMessage").style.color = "#22c55e";
     document.getElementById("adminMessage").style.fontWeight = "600";
 
-    // Reload users list
     setTimeout(() => loadUsers(), 1000);
   } catch (error) {
-    console.error("Error deleting user:", error);
     alert("❌ Error deleting user: " + error.message);
   }
 }
 
-// DELETE ALL USERS
+// Delete all users (admin)
 async function deleteAllUsers() {
   if (
     !confirm("⚠️ WARNING: This will delete ALL users. Are you absolutely sure?")
@@ -306,15 +301,13 @@ async function deleteAllUsers() {
     document.getElementById("adminMessage").style.color = "#22c55e";
     document.getElementById("adminMessage").style.fontWeight = "600";
 
-    // Reload users list
     setTimeout(() => loadUsers(), 1000);
   } catch (error) {
-    console.error("Error deleting all users:", error);
     alert("❌ Error deleting all users: " + error.message);
   }
 }
 
-// INITIALIZE ON PAGE LOAD
+// Initial load
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
 });

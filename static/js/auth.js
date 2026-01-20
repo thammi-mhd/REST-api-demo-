@@ -1,8 +1,6 @@
 const API_BASE_URL = "http://127.0.0.1:5000/api/v1";
 
-// ===============================
 // REGISTER FORM HANDLER
-// ===============================
 const registerForm = document.getElementById("registerForm");
 
 if (registerForm) {
@@ -28,7 +26,7 @@ if (registerForm) {
 
     // Validate passwords match
     if (password !== confirmPassword) {
-      messageBox.innerText = "❌ Passwords do not match";
+      messageBox.innerText = "Passwords do not match";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
       // Auto-focus on confirm password field
@@ -38,7 +36,7 @@ if (registerForm) {
 
     // Validate fields are not empty
     if (!name || !email || !password) {
-      messageBox.innerText = "⚠️ All fields are required";
+      messageBox.innerText = "All fields are required";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
       return;
@@ -46,7 +44,7 @@ if (registerForm) {
 
     // Validate password length
     if (password.length < 6) {
-      messageBox.innerText = "⚠️ Password must be at least 6 characters";
+      messageBox.innerText = "Password must be at least 6 characters";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
       document.getElementById("password").focus();
@@ -55,7 +53,7 @@ if (registerForm) {
 
     // Validate email format
     if (!email.includes("@") || !email.includes(".")) {
-      messageBox.innerText = "⚠️ Please enter a valid email";
+      messageBox.innerText = "Please enter a valid email";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
       document.getElementById("email").focus();
@@ -66,7 +64,7 @@ if (registerForm) {
     inputs.forEach((input) => (input.disabled = true));
     registerBtn.disabled = true;
     const originalText = registerBtn.innerText;
-    registerBtn.innerText = "⏳ Creating Account...";
+    registerBtn.innerText = "Creating Account...";
 
     try {
       const payload = { name, email, password };
@@ -83,11 +81,11 @@ if (registerForm) {
       console.log("Response:", result);
 
       if (response.ok) {
-        messageBox.innerText = "✅ " + result.message;
+        messageBox.innerText = "success " + result.message;
         messageBox.className = "message-box success";
       } else {
         messageBox.innerText =
-          "❌ " + (result.message || "Registration failed");
+          "something went wrong " + (result.message || "Registration failed");
         messageBox.className = "message-box error";
       }
       messageBox.style.display = "block";
@@ -106,7 +104,7 @@ if (registerForm) {
     } catch (error) {
       console.error("Fetch error:", error);
       messageBox.innerText =
-        "❌ Network error. Please check your connection and try again.";
+        "Network error. Please check your connection and try again.";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
 
@@ -142,7 +140,7 @@ if (loginForm) {
 
     // Validate fields are not empty
     if (!email || !password) {
-      messageBox.innerText = "⚠️ Email and password are required";
+      messageBox.innerText = "Email and password are required";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
       if (!email) document.getElementById("email").focus();
@@ -152,7 +150,7 @@ if (loginForm) {
 
     // Validate email format
     if (!email.includes("@") || !email.includes(".")) {
-      messageBox.innerText = "⚠️ Please enter a valid email";
+      messageBox.innerText = "Please enter a valid email";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
       document.getElementById("email").focus();
@@ -163,7 +161,7 @@ if (loginForm) {
     inputs.forEach((input) => (input.disabled = true));
     loginBtn.disabled = true;
     const originalText = loginBtn.innerText;
-    loginBtn.innerText = "⏳ Signing In...";
+    loginBtn.innerText = "Signing In...";
 
     try {
       const payload = { email, password };
@@ -180,10 +178,10 @@ if (loginForm) {
       console.log("Response:", result);
 
       if (response.ok) {
-        messageBox.innerText = "✅ " + result.message;
+        messageBox.innerText = "success " + result.message;
         messageBox.className = "message-box success";
       } else {
-        messageBox.innerText = "❌ " + (result.message || "Login failed");
+        messageBox.innerText = "error " + (result.message || "Login failed");
         messageBox.className = "message-box error";
       }
       messageBox.style.display = "block";
@@ -210,7 +208,7 @@ if (loginForm) {
     } catch (error) {
       console.error("Fetch error:", error);
       messageBox.innerText =
-        "❌ Network error. Please check your connection and try again.";
+        "Network error. Please check your connection and try again.";
       messageBox.className = "message-box error";
       messageBox.style.display = "block";
 
@@ -222,9 +220,7 @@ if (loginForm) {
   });
 }
 
-// ===============================
 // AUTH HEADER HELPER
-// ===============================
 function getAuthHeaders() {
   const token = localStorage.getItem("token");
 
