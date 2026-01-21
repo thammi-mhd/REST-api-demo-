@@ -1,0 +1,64 @@
+2026-01-21 13:57:18,589 INFO Backend API server started
+2026-01-21 13:57:18,671 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-01-21 13:57:18,671 INFO [33mPress CTRL+C to quit[0m
+2026-01-21 13:57:18,675 INFO  * Restarting with stat
+2026-01-21 13:57:20,075 INFO Backend API server started
+2026-01-21 13:57:20,125 WARNING  * Debugger is active!
+2026-01-21 13:57:20,125 INFO  * Debugger PIN: 645-645-579
+2026-01-21 13:59:11,837 INFO Backend API server started
+2026-01-21 13:59:11,934 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-01-21 13:59:11,934 INFO [33mPress CTRL+C to quit[0m
+2026-01-21 13:59:11,937 INFO  * Restarting with stat
+2026-01-21 13:59:13,268 INFO Backend API server started
+2026-01-21 13:59:13,327 WARNING  * Debugger is active!
+2026-01-21 13:59:13,330 INFO  * Debugger PIN: 645-645-579
+2026-01-21 13:59:36,461 INFO Backend API server started
+2026-01-21 13:59:36,553 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-01-21 13:59:36,553 INFO [33mPress CTRL+C to quit[0m
+2026-01-21 13:59:36,561 INFO  * Restarting with stat
+2026-01-21 13:59:37,938 INFO Backend API server started
+2026-01-21 13:59:37,983 WARNING  * Debugger is active!
+2026-01-21 13:59:37,992 INFO  * Debugger PIN: 645-645-579
+2026-01-21 14:00:08,813 INFO Registration attempt for email: test@example.com
+2026-01-21 14:00:08,970 INFO User registered: username=testuser
+2026-01-21 14:00:08,970 INFO 127.0.0.1 - - [21/Jan/2026 14:00:08] "[35m[1mPOST /api/v1/auth/register HTTP/1.1[0m" 201 -
+2026-01-21 14:00:29,588 INFO Login attempt for email: test@example.com
+2026-01-21 14:00:29,718 INFO Login successful: username=testuser
+2026-01-21 14:00:29,718 INFO JWT issued for user_id=5
+2026-01-21 14:00:29,718 INFO 127.0.0.1 - - [21/Jan/2026 14:00:29] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2026-01-21 14:00:38,164 INFO 127.0.0.1 - - [21/Jan/2026 14:00:38] "[31m[1mPOST /api/v1/tasks HTTP/1.1[0m" 422 -
+2026-01-21 14:00:48,198 INFO Login attempt for email: test@example.com
+2026-01-21 14:00:48,315 INFO Login successful: username=testuser
+2026-01-21 14:00:48,315 INFO JWT issued for user_id=5
+2026-01-21 14:00:48,315 INFO 127.0.0.1 - - [21/Jan/2026 14:00:48] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2026-01-21 14:00:48,441 INFO Task created: task_id=1 user_id=5
+2026-01-21 14:00:48,441 INFO 127.0.0.1 - - [21/Jan/2026 14:00:48] "[35m[1mPOST /api/v1/tasks HTTP/1.1[0m" 201 -
+2026-01-21 14:01:40,813 INFO Backend API server started
+2026-01-21 14:01:40,909 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-01-21 14:01:40,909 INFO [33mPress CTRL+C to quit[0m
+2026-01-21 14:01:40,913 INFO  * Restarting with stat
+2026-01-21 14:01:42,221 INFO Backend API server started
+2026-01-21 14:01:42,269 WARNING  * Debugger is active!
+2026-01-21 14:01:42,280 INFO  * Debugger PIN: 645-645-579
+2026-01-21 14:01:48,798 INFO 127.0.0.1 - - [21/Jan/2026 14:01:48] "GET / HTTP/1.1" 200 -
+2026-01-21 14:01:49,012 INFO 127.0.0.1 - - [21/Jan/2026 14:01:49] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-01-21 14:01:49,013 INFO 127.0.0.1 - - [21/Jan/2026 14:01:49] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-01-21 14:01:53,683 INFO 127.0.0.1 - - [21/Jan/2026 14:01:53] "GET /login HTTP/1.1" 200 -
+2026-01-21 14:01:53,715 INFO 127.0.0.1 - - [21/Jan/2026 14:01:53] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-01-21 14:01:53,723 INFO 127.0.0.1 - - [21/Jan/2026 14:01:53] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-01-21 14:02:05,883 INFO Login attempt for email: tmmi7625@gmail.com
+2026-01-21 14:02:06,002 INFO Login successful: username=mahammad thameez
+2026-01-21 14:02:06,002 INFO JWT issued for user_id=4
+2026-01-21 14:02:06,002 INFO 127.0.0.1 - - [21/Jan/2026 14:02:06] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2026-01-21 14:02:07,548 INFO 127.0.0.1 - - [21/Jan/2026 14:02:07] "GET /dashboard HTTP/1.1" 200 -
+2026-01-21 14:02:07,580 INFO 127.0.0.1 - - [21/Jan/2026 14:02:07] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-01-21 14:02:07,588 INFO 127.0.0.1 - - [21/Jan/2026 14:02:07] "[36mGET /static/js/dashboard.js HTTP/1.1[0m" 304 -
+2026-01-21 14:02:07,596 INFO 127.0.0.1 - - [21/Jan/2026 14:02:07] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -
+2026-01-21 14:02:07,638 INFO 127.0.0.1 - - [21/Jan/2026 14:02:07] "GET /api/v1/tasks HTTP/1.1" 200 -
+2026-01-21 14:02:13,832 INFO 127.0.0.1 - - [21/Jan/2026 14:02:13] "GET /login HTTP/1.1" 200 -
+2026-01-21 14:02:13,867 INFO 127.0.0.1 - - [21/Jan/2026 14:02:13] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-01-21 14:02:13,874 INFO 127.0.0.1 - - [21/Jan/2026 14:02:13] "[36mGET /static/js/auth.js HTTP/1.1[0m" 304 -

@@ -50,19 +50,21 @@ jwt = JWTManager(app)
 swagger = Swagger(app)
 
 
-# Logging setup (kept simple)
-if not os.path.exists("logs"):
-    os.mkdir("logs")
+# Logging setup
+logging.basicConfig(
+    filename="app.log",
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    force=True
+)
 
-file_handler = RotatingFileHandler("logs/app.log", maxBytes=10240, backupCount=10)
-file_handler.setFormatter(logging.Formatter(
-    "%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]"
-))
-file_handler.setLevel(logging.INFO)
+# Also add console handler to see output
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+console_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+logging.getLogger().addHandler(console_handler)
 
-app.logger.addHandler(file_handler)
-app.logger.setLevel(logging.INFO)
-app.logger.info("Backend API server started")
+logging.info("Backend API server started")
 
 
 # Database models
@@ -89,6 +91,8 @@ def admin_required(fn):
     def wrapper(*args, **kwargs):
         claims = get_jwt()
         if claims.get("role") != "admin":
+            user_email = claims.get("email", "Unknown")
+            logging.warning(f"Unauthorized access attempt: {user_email} (user_id: {claims.get('id')}) tried to access admin endpoint")
             return jsonify({"message": "Admin access required"}), 403
         return fn(*args, **kwargs)
     return wrapper
@@ -119,7 +123,7 @@ def dashboard():
 @app.route("/api/v1/auth/register", methods=["POST"])
 def register():
     data = request.get_json()
-    app.logger.info(
+    logging.info(
         f"Registration attempt for email: {data.get('email') if data else 'None'}"
     )
 
@@ -153,11 +157,11 @@ def register():
     try:
         db.session.add(user)
         db.session.commit()
-        app.logger.info(f"User registered: {email} ({role})")
+        logging.info(f"User registered: username={name}")
         return jsonify({"message": "User registered successfully"}), 201
     except Exception as e:
         db.session.rollback()
-        app.logger.error(str(e))
+        logging.error(str(e))
         return jsonify({"message": "Registration failed"}), 500
 
 
@@ -165,7 +169,7 @@ def register():
 @app.route("/api/v1/auth/login", methods=["POST"])
 def login_api():
     data = request.get_json()
-    app.logger.info(
+    logging.info(
         f"Login attempt for email: {data.get('email') if data else 'None'}"
     )
 
@@ -175,6 +179,7 @@ def login_api():
     user = User.query.filter_by(email=data["email"]).first()
 
     if not user or not check_password_hash(user.password, data["password"]):
+        logging.info(f"Login failed: Invalid credentials for {data.get('email')}")
         return jsonify({"message": "Invalid credentials"}), 401
 
     # Create JWT token with role info
@@ -187,6 +192,9 @@ def login_api():
             "id": user.id
         }
     )
+
+    logging.info(f"Login successful: username={user.name}")
+    logging.info(f"JWT issued for user_id={user.id}")
 
     return jsonify({
         "message": "Login successful",
@@ -201,9 +209,9 @@ def login_api():
 def create_task():
     claims = get_jwt()
     user_id = claims.get("id")
+    user_email = claims.get("email")
 
     data = request.get_json()
-    app.logger.info(f"Creating task for user {user_id}")
 
     if not data:
         return jsonify({"message": "Request body is required"}), 400
@@ -219,9 +227,11 @@ def create_task():
     try:
         db.session.add(task)
         db.session.commit()
+        logging.info(f"Task created: task_id={task.id} user_id={user_id}")
         return jsonify({"message": "Task created", "id": task.id}), 201
     except Exception as e:
         db.session.rollback()
+        logging.error(f"Failed to create task for user {user_email}: {str(e)}")
         return jsonify({"message": "Failed to create task"}), 500
 
 
@@ -246,18 +256,26 @@ def get_tasks():
 def update_task(task_id):
     claims = get_jwt()
     user_id = claims.get("id")
+    user_email = claims.get("email")
     data = request.get_json()
 
     task = Task.query.filter_by(id=task_id, user_id=user_id).first()
 
     if not task:
+        logging.warning(f"Task update failed: task_id={task_id} not found or unauthorized access by {user_email}")
         return jsonify({"message": "Task not found"}), 404
 
     task.title = data.get("title", task.title)
     task.description = data.get("description", task.description)
 
-    db.session.commit()
-    return jsonify({"message": "Task updated"}), 200
+    try:
+        db.session.commit()
+        logging.info(f"Task updated: task_id={task_id}, user_email={user_email}")
+        return jsonify({"message": "Task updated"}), 200
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f"Failed to update task {task_id} for user {user_email}: {str(e)}")
+        return jsonify({"message": "Failed to update task"}), 500
 
 
 # Delete task
@@ -266,15 +284,23 @@ def update_task(task_id):
 def delete_task(task_id):
     claims = get_jwt()
     user_id = claims.get("id")
+    user_email = claims.get("email")
 
     task = Task.query.filter_by(id=task_id, user_id=user_id).first()
 
     if not task:
+        logging.warning(f"Task deletion failed: task_id={task_id} not found or unauthorized access by {user_email}")
         return jsonify({"message": "Task not found"}), 404
 
-    db.session.delete(task)
-    db.session.commit()
-    return jsonify({"message": "Task deleted"}), 200
+    try:
+        db.session.delete(task)
+        db.session.commit()
+        logging.info(f"Task deleted: task_id={task_id} user_id={user_id}")
+        return jsonify({"message": "Task deleted"}), 200
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f"Failed to delete task {task_id} for user {user_email}: {str(e)}")
+        return jsonify({"message": "Failed to delete task"}), 500
 
 
 # Admin: get all users
@@ -282,7 +308,11 @@ def delete_task(task_id):
 @jwt_required()
 @admin_required
 def get_all_users():
+    claims = get_jwt()
+    admin_email = claims.get("email")
+    
     users = User.query.all()
+    logging.info(f"Admin retrieved all users: admin_email={admin_email}, user_count={len(users)}")
 
     return jsonify([
         {"id": u.id, "name": u.name, "email": u.email, "role": u.role}
@@ -295,18 +325,25 @@ def get_all_users():
 @jwt_required()
 @admin_required
 def delete_user(user_id):
+    claims = get_jwt()
+    admin_email = claims.get("email")
+    
     user = User.query.filter_by(id=user_id).first()
 
     if not user:
+        logging.warning(f"User deletion failed: user_id={user_id} not found, requested by admin {admin_email}")
         return jsonify({"message": "User not found"}), 404
 
     try:
+        task_count = Task.query.filter_by(user_id=user_id).count()
         Task.query.filter_by(user_id=user_id).delete()
         db.session.delete(user)
         db.session.commit()
+        logging.info(f"User deleted: user_id={user_id}, user_email={user.email}, deleted_tasks={task_count}, admin={admin_email}")
         return jsonify({"message": "User deleted successfully"}), 200
-    except Exception:
+    except Exception as e:
         db.session.rollback()
+        logging.error(f"Failed to delete user {user_id} requested by admin {admin_email}: {str(e)}")
         return jsonify({"message": "Failed to delete user"}), 500
 
 
