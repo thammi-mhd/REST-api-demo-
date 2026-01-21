@@ -69,7 +69,7 @@ async function createTask() {
   const msg = document.getElementById("taskMessage");
 
   if (!title) {
-    msg.textContent = "⚠️ Task title is required";
+    msg.textContent = "Task title is required";
     msg.style.color = "#dc2626";
     msg.style.fontWeight = "600";
     setTimeout(() => (msg.textContent = ""), 4000);
@@ -86,14 +86,14 @@ async function createTask() {
     const data = await res.json();
 
     if (!res.ok) {
-      msg.textContent = "❌ " + (data.message || "Error creating task");
+      msg.textContent = "X" + (data.message || "Error creating task");
       msg.style.color = "#dc2626";
       msg.style.fontWeight = "600";
       setTimeout(() => (msg.textContent = ""), 4000);
       return;
     }
 
-    msg.textContent = "✅ Task added successfully!";
+    msg.textContent = "Task added successfully!";
     msg.style.color = "#22c55e";
     msg.style.fontWeight = "600";
 
@@ -103,7 +103,7 @@ async function createTask() {
     setTimeout(() => (msg.textContent = ""), 3000);
     loadTasks();
   } catch (error) {
-    msg.textContent = "❌ Network error. Please try again.";
+    msg.textContent = "Network error. Please try again.";
     msg.style.color = "#dc2626";
     msg.style.fontWeight = "600";
     setTimeout(() => (msg.textContent = ""), 4000);
@@ -128,7 +128,7 @@ async function loadTasks() {
 
     if (!tasks.length) {
       list.innerHTML =
-        "<li style='text-align: center; color: #9ca3af; padding: 20px;'>✨ No tasks yet. Create one to get started!</li>";
+        "<li style='text-align: center; color: #9ca3af; padding: 20px;'>No tasks yet. Create one to get started!</li>";
       return;
     }
 
@@ -148,7 +148,7 @@ async function loadTasks() {
       li.appendChild(content);
 
       const deleteBtn = document.createElement("button");
-      deleteBtn.innerHTML = "🗑️";
+      deleteBtn.innerHTML = "Delete";
       deleteBtn.style.background = "none";
       deleteBtn.style.border = "none";
       deleteBtn.style.cursor = "pointer";
@@ -215,8 +215,8 @@ async function loadUsers() {
 
     users.forEach((u) => {
       const tr = document.createElement("tr");
-      const roleColor = u.role === "admin" ? "#ef4444" : "#22c55e";
-      const roleLabel = u.role === "admin" ? "👑 Admin" : "👤 User";
+      const roleColor = u.role === "admin" ? "#da2626" : "#008d34";
+      const roleLabel = u.role === "admin" ? "Admin" : "User";
 
       tr.innerHTML = `
         <td style="padding: 12px;">${u.id}</td>
@@ -228,7 +228,7 @@ async function loadUsers() {
           </span>
         </td>
         <td style="padding: 12px;">
-          <button onclick="deleteUser(${u.id})" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">🗑️ Delete</button>
+          <button onclick="deleteUser(${u.id})" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">Delete</button>
         </td>
       `;
 
@@ -236,7 +236,7 @@ async function loadUsers() {
     });
   } catch (error) {
     document.getElementById("adminMessage").textContent =
-      "❌ Error loading users: " + error.message;
+      "Error loading users: " + error.message;
     document.getElementById("adminMessage").style.color = "#dc2626";
   }
 }
@@ -256,30 +256,30 @@ async function deleteUser(userId) {
     const data = await res.json();
 
     if (!res.ok) {
-      alert("❌ Error: " + data.message);
+      alert("Error: " + data.message);
       return;
     }
 
     document.getElementById("adminMessage").textContent =
-      "✅ User deleted successfully";
+      "User deleted successfully";
     document.getElementById("adminMessage").style.color = "#22c55e";
     document.getElementById("adminMessage").style.fontWeight = "600";
 
     setTimeout(() => loadUsers(), 1000);
   } catch (error) {
-    alert("❌ Error deleting user: " + error.message);
+    alert("Error deleting user: " + error.message);
   }
 }
 
 // Delete all users (admin)
 async function deleteAllUsers() {
   if (
-    !confirm("⚠️ WARNING: This will delete ALL users. Are you absolutely sure?")
+    !confirm("WARNING: This will delete ALL users. Are you absolutely sure?")
   ) {
     return;
   }
 
-  if (!confirm("🔴 This action cannot be undone. Type 'DELETE' to confirm.")) {
+  if (!confirm("This action cannot be undone. Type 'DELETE' to confirm.")) {
     return;
   }
 
@@ -292,18 +292,18 @@ async function deleteAllUsers() {
     const data = await res.json();
 
     if (!res.ok) {
-      alert("❌ Error: " + data.message);
+      alert("Error: " + data.message);
       return;
     }
 
     document.getElementById("adminMessage").textContent =
-      "✅ All users deleted successfully";
+      "All users deleted successfully";
     document.getElementById("adminMessage").style.color = "#22c55e";
     document.getElementById("adminMessage").style.fontWeight = "600";
 
     setTimeout(() => loadUsers(), 1000);
   } catch (error) {
-    alert("❌ Error deleting all users: " + error.message);
+    alert("Error deleting all users: " + error.message);
   }
 }
 
